@@ -56,6 +56,26 @@ Interface.start(8080)
 
 Sau đó mở trình duyệt và truy cập: `http://localhost:8080`
 
+### Cách 3: Tạo file thực thi độc lập (Cho sinh viên không cài Julia)
+
+Nếu bạn muốn chia sẻ công cụ này cho người khác mà không yêu cầu họ cài Julia:
+
+```julia
+# Build executable
+julia --project=. build.jl
+```
+
+Sau khi build xong (10-20 phút lần đầu), file thực thi sẽ nằm trong thư mục `LabelImgJL-dist/bin/`:
+- **Windows**: `LabelImgJL.exe`
+- **Linux/Mac**: `LabelImgJL`
+
+Xem chi tiết tại [BUILD.md](BUILD.md)
+
+**Để phân phối cho sinh viên:**
+1. Nén thư mục `LabelImgJL-dist`
+2. Sinh viên giải nén và chạy file executable
+3. Mở trình duyệt tới `http://localhost:8080`
+
 ## 📖 Hướng dẫn sử dụng
 
 1. **Tạo Project mới**:
@@ -77,7 +97,7 @@ Sau đó mở trình duyệt và truy cập: `http://localhost:8080`
 
 4. **Các công cụ annotation**:
    - **Rectangle**: Click và kéo để vẽ hộp chữ nhật
-   - **Polygon**: Click nhiều lần để vẽ đa giác, double-click để hoàn thành
+   - **Polygon**: Click chuột trái nhiều lần để thêm điểm, click chuột phải để hoàn thành (cần ít nhất 3 điểm)
    - **Point**: Click để đánh dấu một điểm
 
 ## 📁 Cấu trúc dữ liệu đầu ra

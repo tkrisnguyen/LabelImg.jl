@@ -1,9 +1,10 @@
 module Interface
 
-using Genie, Genie.Router, Genie.Renderer.Html, Genie.Renderer.Json
+using Genie, Genie.Router, Genie.Renderer.Html, Genie.Renderer.Json, Genie.Requests
 using JSON3
 using Images, FileIO
 using Base64
+using Dates
 
 # Data structures
 mutable struct Annotation
@@ -359,13 +360,13 @@ route("/") do
         <div id="projectModal" class="modal">
             <div class="modal-content">
                 <h2 style="margin-bottom: 1.5rem;">Create New Project</h2>
-                <label>Project Name:</label>
+                <label for="projectName">Project Name:</label>
                 <input type="text" id="projectName" placeholder="My Annotation Project">
                 
-                <label>Image Directory:</label>
+                <label for="imageDir">Image Directory:</label>
                 <input type="text" id="imageDir" placeholder="/path/to/images">
                 
-                <label>Labels (comma separated):</label>
+                <label for="labelsInput">Labels (comma separated):</label>
                 <input type="text" id="labelsInput" placeholder="cat, dog, person">
                 
                 <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
@@ -395,6 +396,7 @@ route("/") do
                 canvas.addEventListener('mousemove', handleMouseMove);
                 canvas.addEventListener('mouseup', handleMouseUp);
                 canvas.addEventListener('click', handleClick);
+                canvas.addEventListener('contextmenu', handleRightClick);
             });
             
             function setTool(tool) {
@@ -408,8 +410,10 @@ route("/") do
                 if (currentTool === 'polygon' || !currentLabel) return;
                 
                 const rect = canvas.getBoundingClientRect();
-                startX = e.clientX - rect.left;
-                startY = e.clientY - rect.top;
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                startX = (e.clientX - rect.left) * scaleX;
+                startY = (e.clientY - rect.top) * scaleY;
                 isDrawing = true;
             }
             
@@ -417,8 +421,10 @@ route("/") do
                 if (!isDrawing || currentTool === 'polygon') return;
                 
                 const rect = canvas.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const x = (e.clientX - rect.left) * scaleX;
+                const y = (e.clientY - rect.top) * scaleY;
                 
                 redrawCanvas();
                 
@@ -437,8 +443,10 @@ route("/") do
                 if (!isDrawing || currentTool === 'polygon') return;
                 
                 const rect = canvas.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const x = (e.clientX - rect.left) * scaleX;
+                const y = (e.clientY - rect.top) * scaleY;
                 
                 if (currentTool === 'rect' && currentLabel) {
                     const annotation = {
@@ -459,11 +467,13 @@ route("/") do
             }
             
             function handleClick(e) {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const x = (e.clientX - rect.left) * scaleX;
+                const y = (e.clientY - rect.top) * scaleY;
+                
                 if (currentTool === 'point' && currentLabel) {
-                    const rect = canvas.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    
                     annotations.push({
                         type: 'point',
                         label: currentLabel,
@@ -474,25 +484,25 @@ route("/") do
                     updateAnnotationList();
                     redrawCanvas();
                 } else if (currentTool === 'polygon' && currentLabel) {
-                    const rect = canvas.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    
                     polygonPoints.push({x, y});
                     redrawCanvas();
-                    
-                    // Double-click to finish polygon
-                    if (e.detail === 2 && polygonPoints.length > 2) {
-                        annotations.push({
-                            type: 'polygon',
-                            label: currentLabel,
-                            points: [...polygonPoints],
-                            color: getRandomColor()
-                        });
-                        polygonPoints = [];
-                        updateAnnotationList();
-                        redrawCanvas();
-                    }
+                }
+            }
+            
+            function handleRightClick(e) {
+                e.preventDefault();
+                
+                // Right-click to finish polygon
+                if (currentTool === 'polygon' && polygonPoints.length > 2) {
+                    annotations.push({
+                        type: 'polygon',
+                        label: currentLabel,
+                        points: [...polygonPoints],
+                        color: getRandomColor()
+                    });
+                    polygonPoints = [];
+                    updateAnnotationList();
+                    redrawCanvas();
                 }
             }
             
@@ -561,22 +571,29 @@ route("/") do
                 return colors[Math.floor(Math.random() * colors.length)];
             }
             
-            function selectLabel(label) {
+            function selectLabel(label, element) {
                 currentLabel = label;
                 document.querySelectorAll('.label-item').forEach(item => {
                     item.classList.remove('selected');
                 });
-                event.target.classList.add('selected');
+                element.classList.add('selected');
             }
             
             function updateAnnotationList() {
                 const list = document.getElementById('annotationList');
                 list.innerHTML = annotations.map((ann, i) => 
-                    `<div class="annotation-item">
-                        <span>${ann.type}: ${ann.label}</span>
-                        <button class="delete-btn" onclick="deleteAnnotation(${i})">✕</button>
-                    </div>`
+                    '<div class="annotation-item">' +
+                        '<span>' + ann.type + ': ' + ann.label + '</span>' +
+                        '<button class="delete-btn" data-index="' + i + '">✕</button>' +
+                    '</div>'
                 ).join('');
+                
+                // Add event listeners to delete buttons
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        deleteAnnotation(parseInt(this.getAttribute('data-index')));
+                    });
+                });
             }
             
             function deleteAnnotation(index) {
@@ -623,12 +640,19 @@ route("/") do
             function updateLabelList(labels) {
                 const list = document.getElementById('labelList');
                 list.innerHTML = labels.map(label => 
-                    `<div class="label-item" onclick="selectLabel('${label}')">${label}</div>`
+                    '<div class="label-item" data-label="' + label + '">' + label + '</div>'
                 ).join('');
+                
+                // Add event listeners to label items
+                document.querySelectorAll('.label-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        selectLabel(this.getAttribute('data-label'), this);
+                    });
+                });
             }
             
             async function loadImage(index) {
-                const response = await fetch(`/api/image/${index}`);
+                const response = await fetch('/api/image/' + index);
                 const data = await response.json();
                 
                 if (data.image) {
@@ -642,7 +666,7 @@ route("/") do
                         updateAnnotationList();
                         document.getElementById('imageInfo').textContent = data.filename;
                         document.getElementById('imageCounter').textContent = 
-                            `${index + 1} / ${data.total}`;
+                            (index + 1) + ' / ' + data.total;
                     };
                     img.src = data.image;
                 }
@@ -678,6 +702,11 @@ route("/") do
     </body>
     </html>
     """)
+end
+
+# Favicon route to prevent 404
+route("/favicon.ico") do
+    ""
 end
 
 # API Routes
@@ -783,7 +812,7 @@ function start(port::Int=8080)
     Genie.config.server_host = "0.0.0.0"
     
     @info "Starting LabelImgJL server on http://localhost:$port"
-    startup()
+    Genie.up()
 end
 
 end # module

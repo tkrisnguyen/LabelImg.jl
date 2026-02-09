@@ -1,0 +1,6 @@
+# Railway/Render deployment configuration
+[build]
+  command = "julia --project=. -e 'using Pkg; Pkg.instantiate()'"
+
+[start]
+  command = "julia --project=. -e 'include(\"src/Interface.jl\"); Interface.start(parse(Int, get(ENV, \"PORT\", \"8080\")))'"
