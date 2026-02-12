@@ -70,9 +70,10 @@ Create a simple README for students:
 
 1. **Create Project:** Enter project name, select image folder, add labels (comma-separated)
 2. **Select Label:** Click on a label in the sidebar
-3. **Choose Tool:** Rectangle, Polygon, or Point
+3. **Choose Tool:** Rectangle, Rotated Box, Polygon, or Point
 4. **Draw Annotations:**
    - Rectangle: Click and drag
+   - Rotated Box: Click 3 points (A, B define first edge; C completes box)
    - Polygon: Left-click to add points, right-click to finish
    - Point: Single click
 5. **Save:** Click "Save" button to export annotations to JSON

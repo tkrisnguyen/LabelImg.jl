@@ -23,6 +23,7 @@
 1. **Chọn nhãn**: Click vào một nhãn trong danh sách bên trái
 2. **Chọn công cụ**: 
    - 📦 **Rectangle** (Hình chữ nhật): Click và kéo chuột
+   - ⯐ **Rotated Box** (Hộp xoay): Click 3 điểm - điểm A và B tạo cạnh đầu, điểm C hoàn thành hộp
    - 🔷 **Polygon** (Đa giác): Click chuột trái nhiều lần để thêm điểm, **click chuột phải để hoàn thành**
    - 📍 **Point** (Điểm): Click một lần
 3. **Vẽ annotation** trên ảnh
@@ -50,6 +51,20 @@ Nội dung có dạng:
   "y": 200,
   "width": 300,
   "height": 150
+}
+```
+
+Hoặc cho hộp xoay:
+```json
+{
+  "type": "rotatedRect",
+  "label": "beam",
+  "points": [
+    {"x": 100, "y": 200},
+    {"x": 300, "y": 250},
+    {"x": 280, "y": 350},
+    {"x": 80, "y": 300}
+  ]
 }
 ```
 
@@ -91,6 +106,7 @@ Nội dung có dạng:
 1. **Select label**: Click a label from the left sidebar
 2. **Choose tool**: 
    - 📦 **Rectangle**: Click and drag
+   - ⯐ **Rotated Box**: Click 3 points - points A and B form first edge, point C completes the box
    - 🔷 **Polygon**: Left-click to add points, **right-click to finish**
    - 📍 **Point**: Single click
 3. **Draw annotation** on image
@@ -118,6 +134,20 @@ Format:
   "y": 200,
   "width": 300,
   "height": 150
+}
+```
+
+Or for rotated boxes:
+```json
+{
+  "type": "rotatedRect",
+  "label": "beam",
+  "points": [
+    {"x": 100, "y": 200},
+    {"x": 300, "y": 250},
+    {"x": 280, "y": 350},
+    {"x": 80, "y": 300}
+  ]
 }
 ```
 

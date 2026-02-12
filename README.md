@@ -5,7 +5,7 @@
 ## ✨ Tính năng
 
 - 🖼️ **Giao diện web hiện đại**: Giao diện trực quan, dễ sử dụng
-- 📦 **Nhiều loại annotation**: Rectangle (hộp chữ nhật), Polygon (đa giác), Point (điểm)
+- 📦 **Nhiều loại annotation**: Rectangle (hộp chữ nhật), Rotated Rectangle (hộp quay), Polygon (đa giác), Point (điểm)
 - 🎨 **Quản lý nhãn**: Tạo và quản lý các nhãn tùy chỉnh
 - 💾 **Lưu trữ JSON**: Xuất annotations sang định dạng JSON
 - ⌨️ **Navigation nhanh**: Chuyển đổi giữa các hình ảnh dễ dàng
@@ -87,7 +87,7 @@ Xem chi tiết tại [BUILD.md](BUILD.md)
 
 2. **Gắn nhãn**:
    - Chọn một nhãn từ danh sách bên trái
-   - Chọn công cụ: Rectangle, Polygon, hoặc Point
+   - Chọn công cụ: Rectangle, Rotated Box, Polygon, hoặc Point
    - Vẽ annotation trên hình ảnh
    - Click "Save" để lưu
 
@@ -97,6 +97,7 @@ Xem chi tiết tại [BUILD.md](BUILD.md)
 
 4. **Các công cụ annotation**:
    - **Rectangle**: Click và kéo để vẽ hộp chữ nhật
+   - **Rotated Box**: Click 3 điểm để vẽ hộp xoay (điểm A, B tạo cạnh đầu, điểm C hoàn thành hộp)
    - **Polygon**: Click chuột trái nhiều lần để thêm điểm, click chuột phải để hoàn thành (cần ít nhất 3 điểm)
    - **Point**: Click để đánh dấu một điểm
 
@@ -120,6 +121,17 @@ Annotations được lưu dưới dạng JSON:
           "width": 200,
           "height": 180,
           "color": "#e74c3c"
+        },
+        {
+          "type": "rotatedRect",
+          "label": "dog",
+          "points": [
+            {"x": 150, "y": 100},
+            {"x": 350, "y": 150},
+            {"x": 320, "y": 280},
+            {"x": 120, "y": 230}
+          ],
+          "color": "#3498db"
         }
       ],
       "metadata": {
