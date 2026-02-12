@@ -16,8 +16,8 @@ ipconfig
 
 2. **Start server:**
 ```julia
-include("src/Interface.jl")
-Interface.start(8080)
+include("src/LabelImgJL.jl")
+LabelImgJL.start(8080)
 ```
 
 3. **Configure firewall** (Windows):
@@ -82,7 +82,7 @@ Example: `http://192.168.1.100:8080`
 4. **Configure:**
    - Environment: Docker
    - Or use Build Command: `julia --project=. -e 'using Pkg; Pkg.instantiate()'`
-   - Start Command: `julia --project=. -e 'include("src/Interface.jl"); Interface.start(parse(Int, get(ENV, "PORT", "8080"))))'`
+   - Start Command: `julia --project=. -e 'include("src/LabelImgJL.jl"); LabelImgJL.start(parse(Int, get(ENV, "PORT", "8080"))))'`
 
 5. **Deploy and copy URL**
 
@@ -129,7 +129,7 @@ After=network.target
 Type=simple
 User=youruser
 WorkingDirectory=/home/youruser/LabelImgJL
-ExecStart=/usr/local/bin/julia --project=. -e 'include("src/Interface.jl"); Interface.start(8080)'
+ExecStart=/usr/local/bin/julia --project=. -e 'include("src/LabelImgJL.jl"); LabelImgJL.start(8080)'
 Restart=always
 
 [Install]

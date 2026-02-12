@@ -5,12 +5,12 @@
 using Pkg
 Pkg.activate(".")
 
-include("src/Interface.jl")
-using .Interface
+include("src/LabelImgJL.jl")
+using .LabelImgJL
 
 # Start the annotation server
 # Navigate to http://localhost:8080 in your browser
-Interface.start(8080)
+LabelImgJL.start(8080)
 
 # To use:
 # 1. Click "New Project" button

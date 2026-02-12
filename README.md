@@ -47,11 +47,11 @@ julia example.jl
 using Pkg
 Pkg.activate(".")
 
-include("src/Interface.jl")
-using .Interface
+include("src/LabelImgJL.jl")
+using .LabelImgJL
 
 # Khởi động server trên port 8080
-Interface.start(8080)
+LabelImgJL.start(8080)
 ```
 
 Sau đó mở trình duyệt và truy cập: `http://localhost:8080`

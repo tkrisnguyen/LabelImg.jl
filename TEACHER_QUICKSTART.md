@@ -101,8 +101,8 @@ cd("path/to/LabelImgJL")
 using Pkg
 Pkg.activate(".")
 Pkg.instantiate()
-include("src/Interface.jl")
-Interface.start(8080)
+include("src/LabelImgJL.jl")
+LabelImgJL.start(8080)
 ```
 
 ## Quick Checklist

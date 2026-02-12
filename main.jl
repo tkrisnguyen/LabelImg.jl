@@ -2,7 +2,7 @@
 
 # Main entry point for compiled executable
 
-include("src/Interface.jl")
+include("src/LabelImgJL.jl")
 
 function main()
     # Parse command line arguments
@@ -24,7 +24,7 @@ function main()
     println("=" ^ 60)
     
     # Start the server
-    Interface.start(port)
+    LabelImgJL.start(port)
 end
 
 # Run main if this is the entry point

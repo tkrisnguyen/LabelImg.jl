@@ -1,4 +1,4 @@
-module Interface
+module LabelImgJL
 
 using Genie, Genie.Router, Genie.Renderer.Html, Genie.Renderer.Json, Genie.Requests
 using JSON3
