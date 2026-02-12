@@ -335,6 +335,7 @@ route("/") do
                 <div class="toolbar">
                     <div class="tool-group">
                         <button class="btn" id="rectBtn" onclick="setTool('rect')">▭ Rectangle</button>
+                        <button class="btn" id="rotatedRectBtn" onclick="setTool('rotatedRect')">⬔ Rotated Box</button>
                         <button class="btn" id="polygonBtn" onclick="setTool('polygon')">⬢ Polygon</button>
                         <button class="btn" id="pointBtn" onclick="setTool('point')">● Point</button>
                     </div>
@@ -387,6 +388,10 @@ route("/") do
             let polygonPoints = [];
             let project = null;
             
+            // Rotated rectangle state
+            let rotatedRectStage = 0; // 0: not started, 1: first edge drawn, 2: complete
+            let rotatedRectPoints = []; // Will store points A, B, C
+            
             // Initialize
             document.addEventListener('DOMContentLoaded', function() {
                 canvas = document.getElementById('canvas');
@@ -404,10 +409,13 @@ route("/") do
                 document.querySelectorAll('.toolbar .btn').forEach(btn => btn.classList.remove('active'));
                 document.getElementById(tool + 'Btn').classList.add('active');
                 polygonPoints = [];
+                rotatedRectStage = 0;
+                rotatedRectPoints = [];
+                redrawCanvas();
             }
             
             function handleMouseDown(e) {
-                if (currentTool === 'polygon' || !currentLabel) return;
+                if (currentTool === 'polygon' || currentTool === 'rotatedRect' || !currentLabel) return;
                 
                 const rect = canvas.getBoundingClientRect();
                 const scaleX = canvas.width / rect.width;
@@ -418,13 +426,46 @@ route("/") do
             }
             
             function handleMouseMove(e) {
-                if (!isDrawing || currentTool === 'polygon') return;
-                
                 const rect = canvas.getBoundingClientRect();
                 const scaleX = canvas.width / rect.width;
                 const scaleY = canvas.height / rect.height;
                 const x = (e.clientX - rect.left) * scaleX;
                 const y = (e.clientY - rect.top) * scaleY;
+                
+                if (currentTool === 'rotatedRect' && rotatedRectStage > 0) {
+                    // Drawing second or third edge
+                    redrawCanvas();
+                    ctx.strokeStyle = '#3498db';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([5, 5]);
+                    
+                    if (rotatedRectStage === 1) {
+                        // Preview first edge
+                        ctx.beginPath();
+                        ctx.moveTo(rotatedRectPoints[0].x, rotatedRectPoints[0].y);
+                        ctx.lineTo(x, y);
+                        ctx.stroke();
+                    } else if (rotatedRectStage === 2) {
+                        // Preview complete rectangle
+                        const A = rotatedRectPoints[0];
+                        const B = rotatedRectPoints[1];
+                        const C = {x, y};
+                        const D = {x: A.x + (C.x - B.x), y: A.y + (C.y - B.y)};
+                        
+                        ctx.beginPath();
+                        ctx.moveTo(A.x, A.y);
+                        ctx.lineTo(B.x, B.y);
+                        ctx.lineTo(C.x, C.y);
+                        ctx.lineTo(D.x, D.y);
+                        ctx.closePath();
+                        ctx.stroke();
+                    }
+                    
+                    ctx.setLineDash([]);
+                    return;
+                }
+                
+                if (!isDrawing || currentTool === 'polygon') return;
                 
                 redrawCanvas();
                 
@@ -440,7 +481,7 @@ route("/") do
             }
             
             function handleMouseUp(e) {
-                if (!isDrawing || currentTool === 'polygon') return;
+                if (!isDrawing || currentTool === 'polygon' || currentTool === 'rotatedRect') return;
                 
                 const rect = canvas.getBoundingClientRect();
                 const scaleX = canvas.width / rect.width;
@@ -486,6 +527,36 @@ route("/") do
                 } else if (currentTool === 'polygon' && currentLabel) {
                     polygonPoints.push({x, y});
                     redrawCanvas();
+                } else if (currentTool === 'rotatedRect' && currentLabel) {
+                    if (rotatedRectStage === 0) {
+                        // First point clicked
+                        rotatedRectPoints = [{x, y}];
+                        rotatedRectStage = 1;
+                    } else if (rotatedRectStage === 1) {
+                        // Second point clicked - first edge complete
+                        rotatedRectPoints.push({x, y});
+                        rotatedRectStage = 2;
+                    } else if (rotatedRectStage === 2) {
+                        // Third point clicked - complete the rectangle
+                        const A = rotatedRectPoints[0];
+                        const B = rotatedRectPoints[1];
+                        const C = {x, y};
+                        const D = {x: A.x + (C.x - B.x), y: A.y + (C.y - B.y)};
+                        
+                        const annotation = {
+                            type: 'rotatedRect',
+                            label: currentLabel,
+                            points: [A, B, C, D],
+                            color: getRandomColor()
+                        };
+                        annotations.push(annotation);
+                        updateAnnotationList();
+                        
+                        // Reset for next annotation
+                        rotatedRectStage = 0;
+                        rotatedRectPoints = [];
+                    }
+                    redrawCanvas();
                 }
             }
             
@@ -523,6 +594,17 @@ route("/") do
                         ctx.fillRect(ann.x, ann.y, ann.width, ann.height);
                         ctx.fillStyle = ann.color;
                         ctx.fillText(ann.label, ann.x, ann.y - 5);
+                    } else if (ann.type === 'rotatedRect') {
+                        ctx.beginPath();
+                        ctx.moveTo(ann.points[0].x, ann.points[0].y);
+                        for (let i = 1; i < ann.points.length; i++) {
+                            ctx.lineTo(ann.points[i].x, ann.points[i].y);
+                        }
+                        ctx.closePath();
+                        ctx.stroke();
+                        ctx.fill();
+                        ctx.fillStyle = ann.color;
+                        ctx.fillText(ann.label, ann.points[0].x, ann.points[0].y - 5);
                     } else if (ann.type === 'point') {
                         ctx.beginPath();
                         ctx.arc(ann.x, ann.y, 5, 0, 2 * Math.PI);
@@ -561,6 +643,28 @@ route("/") do
                         for (let i = 1; i < polygonPoints.length; i++) {
                             ctx.lineTo(polygonPoints[i].x, polygonPoints[i].y);
                         }
+                        ctx.stroke();
+                    }
+                }
+                
+                // Draw current rotated rectangle first edge
+                if (currentTool === 'rotatedRect' && rotatedRectStage > 0) {
+                    ctx.strokeStyle = '#e74c3c';
+                    ctx.fillStyle = '#e74c3c';
+                    ctx.lineWidth = 3;
+                    
+                    // Draw points
+                    rotatedRectPoints.forEach(p => {
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, 4, 0, 2 * Math.PI);
+                        ctx.fill();
+                    });
+                    
+                    // Draw edges
+                    if (rotatedRectPoints.length >= 2) {
+                        ctx.beginPath();
+                        ctx.moveTo(rotatedRectPoints[0].x, rotatedRectPoints[0].y);
+                        ctx.lineTo(rotatedRectPoints[1].x, rotatedRectPoints[1].y);
                         ctx.stroke();
                     }
                 }
@@ -605,6 +709,8 @@ route("/") do
             function clearCurrent() {
                 annotations = [];
                 polygonPoints = [];
+                rotatedRectStage = 0;
+                rotatedRectPoints = [];
                 updateAnnotationList();
                 redrawCanvas();
             }
