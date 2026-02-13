@@ -15,24 +15,79 @@ using PackageCompiler
 println("Building LabelImgJL executable...")
 println("This may take 10-20 minutes on first build...")
 
-# Create the executable
-create_app(
-    ".",                                    # Source directory
-    "LabelImgJL-dist",                     # Output directory
-    executables = ["main.jl" => "LabelImgJL"],  # Main script -> executable name
-    precompile_execution_file = "precompile.jl",  # Optional: for faster startup
-    force = true,                          # Overwrite existing build
-    include_lazy_artifacts = true,         # Include all artifacts
-    filter_stdlibs = false                 # Include all standard libraries
-)
+# Use shorter path to avoid Windows MAX_PATH issues
+# If build fails with path errors, try building to C:\LabelImgJL-dist
+output_dir = "C:\\Users\\Thanh\\Downloads\\LabelImgJL-dist"
 
-println("\n" * "=" ^ 60)
-println("Build complete!")
-println("=" ^ 60)
-println("Executable location: LabelImgJL-dist/bin/LabelImgJL")
-println("\nTo run:")
-println("  Windows: .\\LabelImgJL-dist\\bin\\LabelImgJL.exe")
-println("  Linux/Mac: ./LabelImgJL-dist/bin/LabelImgJL")
-println("\nTo change port:")
-println("  LabelImgJL.exe 3000")
-println("=" ^ 60)
+# Check if we're on Windows and path might be too long
+if Sys.iswindows()
+    current_dir = pwd()
+    if length(current_dir) > 50
+        println("\n⚠️  WARNING: Current path is long ($(length(current_dir)) chars)")
+        println("   If build fails, try one of these solutions:")
+        println("   1. Build to shorter path: C:\\LabelImgJL-dist")
+        println("   2. Enable long paths in Windows (see BUILD.md)")
+        println("   3. Move project to shorter path like C:\\LabelImgJL\n")
+        
+        # Ask user if they want to use C:\LabelImgJL-dist
+        println("Would you like to build to C:\\LabelImgJL-dist instead? (recommended)")
+        print("Type 'y' for yes, or press Enter to continue with current path: ")
+        response = readline()
+        if lowercase(strip(response)) == "y"
+            output_dir = "C:\\LabelImgJL-dist"
+            println("✓ Using shorter path: $output_dir")
+        end
+    end
+end
+
+println("\nBuilding to: $output_dir")
+
+# Create the executable with reduced optimization to save memory
+try
+    create_app(
+        ".",                                    # Source directory
+        output_dir,                            # Output directory
+        executables = ["main.jl" => "LabelImgJL"],  # Main script -> executable name
+        # Skip precompile_execution_file - Genie doesn't work well with it
+        force = true,                          # Overwrite existing build
+        include_lazy_artifacts = false,        # Exclude lazy artifacts to avoid path issues
+        incremental = true,                    # Use incremental compilation (less memory intensive)
+        filter_stdlibs = false,                # Include all stdlibs
+        cpu_target = "generic"                 # Use generic CPU target (faster compilation)
+    )
+    
+    println("\n" * "=" ^ 60)
+    println("✓ Build complete!")
+    println("=" ^ 60)
+    println("Executable location: $output_dir/bin/LabelImgJL")
+    println("\nTo run:")
+    if Sys.iswindows()
+        println("  Windows: $(output_dir)\\bin\\LabelImgJL.exe")
+    else
+        println("  Linux/Mac: $output_dir/bin/LabelImgJL")
+    end
+    println("\nTo change port:")
+    println("  LabelImgJL.exe 3000")
+    println("=" ^ 60)
+    
+catch e
+    println("\n" * "=" ^ 60)
+    println("❌ Build failed!")
+    println("=" ^ 60)
+    println("Error: $e")
+    println("\nTroubleshooting:")
+    if Sys.iswindows()
+        println("1. Try building to a shorter path:")
+        println("   Set output_dir = \"C:\\\\LabelImgJL-dist\" in build.jl")
+        println("\n2. Enable Windows Long Path Support:")
+        println("   - Run PowerShell as Administrator")
+        println("   - Run: New-ItemProperty -Path \"HKLM:\\SYSTEM\\CurrentControlSet\\Control\\FileSystem\" -Name \"LongPathsEnabled\" -Value 1 -PropertyType DWORD -Force")
+        println("   - Restart computer")
+        println("\n3. Move project to shorter path:")
+        println("   - Move folder to C:\\LabelImgJL")
+        println("   - Run build.jl from there")
+    end
+    println("\nFor more help, see BUILD.md")
+    println("=" ^ 60)
+    rethrow(e)
+end

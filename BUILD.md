@@ -107,6 +107,25 @@ For cross-platform support, build on each platform separately or use CI/CD with 
 
 ## Troubleshooting Build Issues
 
+### Windows: "Path too long" or ENOENT errors
+This happens when file paths exceed Windows' 260-character limit.
+
+**Solution 1: Build to shorter path (Easiest)**
+```julia
+# In build.jl, change output_dir to:
+output_dir = "C:\\LabelImgJL-dist"
+```
+
+**Solution 2: Enable Long Path Support**
+Run PowerShell as Administrator:
+```powershell
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
+```
+Then restart your computer.
+
+**Solution 3: Move project to shorter path**
+Move the entire LabelImgJL folder to `C:\LabelImgJL` and build from there.
+
 ### "Out of Memory" during build
 - Close other applications
 - Increase system swap/page file
@@ -118,3 +137,33 @@ For cross-platform support, build on each platform separately or use CI/CD with 
 
 ### Build fails on Genie
 - Genie might have path dependencies. If issues persist, consider containerization (Docker) instead.
+
+### Precompilation errors (Revise, Genie, etc.)
+PackageCompiler struggles with some packages. If you get precompilation errors:
+
+**Alternative: Skip executable build and use Julia directly**
+Instead of building an executable, give students a simpler launcher script:
+
+**For Windows students** - Create `start.bat`:
+```batch
+@echo off
+julia --project=. -e "include(\"src/LabelImgJL.jl\"); using .LabelImgJL; LabelImgJL.start(8080)"
+pause
+```
+
+**For Linux/Mac students** - Create `start.sh`:
+```bash
+#!/bin/bash
+julia --project=. -e 'include("src/LabelImgJL.jl"); using .LabelImgJL; LabelImgJL.start(8080)'
+```
+
+Then distribute:
+1. The entire project folder (with Project.toml, Manifest.toml, src/)
+2. The launcher script
+3. Instructions to install Julia first
+
+This approach:
+- ✅ Smaller download (~50MB vs 500MB+)
+- ✅ No build errors
+- ✅ Works reliably
+- ❌ Students need to install Julia (but it's quick)

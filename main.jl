@@ -2,7 +2,9 @@
 
 # Main entry point for compiled executable
 
+# Load the module
 include("src/LabelImgJL.jl")
+using .LabelImgJL
 
 function main()
     # Parse command line arguments
