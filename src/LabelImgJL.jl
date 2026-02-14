@@ -6,6 +6,10 @@ using Images, FileIO
 using Base64
 using Dates
 
+# Exports
+export Annotation, Project
+export create_project, save_annotations, encode_image
+
 # Data structures
 mutable struct Annotation
     id::String

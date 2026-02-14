@@ -1,5 +1,6 @@
 name = "LabelImgJL"
-uuid = "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+uuid = "fbed17e4-9066-41ea-b2d4-aff0c0fb68d6"
+authors = ["Thanh Nguyen <tkrisnguyen@users.noreply.github.com>"]
 version = "0.1.0"
 
 [deps]
