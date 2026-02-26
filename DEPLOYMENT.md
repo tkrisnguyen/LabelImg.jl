@@ -104,8 +104,8 @@ sudo ln -s ~/julia-1.12.4/bin/julia /usr/local/bin/julia
 
 4. **Upload your code:**
 ```bash
-git clone https://github.com/yourusername/LabelImg.git
-cd LabelImg
+git clone https://github.com/yourusername/LabelImg.jl.git
+cd LabelImg.jl
 ```
 
 5. **Install dependencies:**
