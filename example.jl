@@ -1,16 +1,16 @@
 #!/usr/bin/env julia
 
-# Example usage of LabelImgJL
+# Example usage of LabelImg
 
 using Pkg
 Pkg.activate(".")
 
-include("src/LabelImgJL.jl")
-using .LabelImgJL
+include("src/LabelImg.jl")
+using .LabelImg
 
 # Start the annotation server
 # Navigate to http://localhost:8080 in your browser
-LabelImgJL.start(8080)
+LabelImg.start(8080)
 
 # To use:
 # 1. Click "New Project" button

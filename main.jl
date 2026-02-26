@@ -3,8 +3,8 @@
 # Main entry point for compiled executable
 
 # Load the module
-include("src/LabelImgJL.jl")
-using .LabelImgJL
+include("src/LabelImg.jl")
+using .LabelImg
 
 function main()
     # Parse command line arguments
@@ -18,7 +18,7 @@ function main()
     end
     
     println("=" ^ 60)
-    println("LabelImgJL - Image Annotation Tool")
+    println("LabelImg - Image Annotation Tool")
     println("=" ^ 60)
     println("Starting server on port $port...")
     println("Open your browser and go to: http://localhost:$port")
@@ -26,7 +26,7 @@ function main()
     println("=" ^ 60)
     
     # Start the server
-    LabelImgJL.start(port)
+    LabelImg.start(port)
 end
 
 # Run main if this is the entry point

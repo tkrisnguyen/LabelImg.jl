@@ -1,4 +1,4 @@
-module LabelImgJL
+module LabelImg
 
 using Genie, Genie.Router, Genie.Renderer.Html, Genie.Renderer.Json, Genie.Requests
 using JSON3
@@ -89,7 +89,7 @@ route("/") do
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>LabelImgJL - Image Annotation Tool</title>
+        <title>LabelImg - Image Annotation Tool</title>
         <style>
             * { margin: 0; padding: 0; box-sizing: border-box; }
             
@@ -318,7 +318,7 @@ route("/") do
     </head>
     <body>
         <div class="header">
-            <h1>🏷️ LabelImgJL - Image Annotation Tool</h1>
+            <h1>🏷️ LabelImg - Image Annotation Tool</h1>
         </div>
         
         <div class="container">
@@ -921,7 +921,7 @@ function start(port::Int=8080)
     Genie.config.server_port = port
     Genie.config.server_host = "0.0.0.0"
     
-    @info "Starting LabelImgJL server on http://localhost:$port"
+    @info "Starting LabelImg server on http://localhost:$port"
     Genie.up()
 end
 

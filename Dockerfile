@@ -19,4 +19,4 @@ ENV JULIA_NUM_THREADS=auto
 ENV JULIA_PROJECT=@.
 
 # Start server
-CMD ["julia", "-e", "include(\"src/LabelImgJL.jl\"); LabelImgJL.start(8080)"]
+CMD ["julia", "-e", "include(\"src/LabelImg.jl\"); LabelImg.start(8080)"]

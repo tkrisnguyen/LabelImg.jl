@@ -16,13 +16,13 @@ ipconfig
 
 2. **Start server:**
 ```julia
-include("src/LabelImgJL.jl")
-LabelImgJL.start(8080)
+include("src/LabelImg.jl")
+LabelImg.start(8080)
 ```
 
 3. **Configure firewall** (Windows):
 ```powershell
-New-NetFirewallRule -DisplayName "LabelImgJL" -Direction Inbound -LocalPort 8080 -Protocol TCP -Action Allow
+New-NetFirewallRule -DisplayName "LabelImg" -Direction Inbound -LocalPort 8080 -Protocol TCP -Action Allow
 ```
 
 4. **Share URL with students:**
@@ -78,11 +78,11 @@ Example: `http://192.168.1.100:8080`
 
 1. **Create account:** https://render.com
 2. **Create new Web Service**
-3. **Connect your GitHub repo** (push LabelImgJL to GitHub first)
+3. **Connect your GitHub repo** (push LabelImg to GitHub first)
 4. **Configure:**
    - Environment: Docker
    - Or use Build Command: `julia --project=. -e 'using Pkg; Pkg.instantiate()'`
-   - Start Command: `julia --project=. -e 'include("src/LabelImgJL.jl"); LabelImgJL.start(parse(Int, get(ENV, "PORT", "8080"))))'`
+   - Start Command: `julia --project=. -e 'include("src/LabelImg.jl"); LabelImg.start(parse(Int, get(ENV, "PORT", "8080"))))'`
 
 5. **Deploy and copy URL**
 
@@ -104,8 +104,8 @@ sudo ln -s ~/julia-1.12.4/bin/julia /usr/local/bin/julia
 
 4. **Upload your code:**
 ```bash
-git clone https://github.com/yourusername/LabelImgJL.git
-cd LabelImgJL
+git clone https://github.com/yourusername/LabelImg.jl.git
+cd LabelImg.jl
 ```
 
 5. **Install dependencies:**
@@ -116,20 +116,20 @@ julia --project=. -e 'using Pkg; Pkg.instantiate()'
 6. **Run server (with systemd for auto-restart):**
 ```bash
 # Create service file
-sudo nano /etc/systemd/system/labelimgjl.service
+sudo nano /etc/systemd/system/labelimg.service
 ```
 
 Content:
 ```ini
 [Unit]
-Description=LabelImgJL Server
+Description=LabelImg Server
 After=network.target
 
 [Service]
 Type=simple
 User=youruser
-WorkingDirectory=/home/youruser/LabelImgJL
-ExecStart=/usr/local/bin/julia --project=. -e 'include("src/LabelImgJL.jl"); LabelImgJL.start(8080)'
+WorkingDirectory=/home/youruser/LabelImg.jl
+ExecStart=/usr/local/bin/julia --project=. -e 'include("src/LabelImg.jl"); LabelImg.start(8080)'
 Restart=always
 
 [Install]
@@ -138,8 +138,8 @@ WantedBy=multi-user.target
 
 ```bash
 # Enable and start
-sudo systemctl enable labelimgjl
-sudo systemctl start labelimgjl
+sudo systemctl enable labelimg
+sudo systemctl start labelimg
 
 # Configure firewall
 sudo ufw allow 8080
@@ -190,7 +190,7 @@ Each student accessing the same server shares the same project state. For multi-
 
 **Windows:**
 ```powershell
-New-NetFirewallRule -DisplayName "LabelImgJL" -Direction Inbound -LocalPort 8080 -Protocol TCP -Action Allow
+New-NetFirewallRule -DisplayName "LabelImg" -Direction Inbound -LocalPort 8080 -Protocol TCP -Action Allow
 ```
 
 **Linux (ufw):**

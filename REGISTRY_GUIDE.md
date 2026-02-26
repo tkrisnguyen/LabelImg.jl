@@ -19,7 +19,7 @@ git push origin main1
 
 ### Bước 2: Tạo Release/Tag trên GitHub
 
-1. Truy cập: https://github.com/tkrisnguyen/LabelImgJL/releases
+1. Truy cập: https://github.com/tkrisnguyen/LabelImg.jl/releases
 2. Click **"Create a new release"**
 3. Điền thông tin:
    - **Tag version**: `v0.1.0` (phải bắt đầu bằng 'v')
@@ -40,7 +40,7 @@ Pkg.add("PkgDev")
 
 **Phương pháp 1: Qua GitHub Comment (Khuyến nghị)**
 
-1. Truy cập repository: https://github.com/tkrisnguyen/LabelImgJL
+1. Truy cập repository: https://github.com/tkrisnguyen/LabelImg.jl
 2. Tạo một **Issue mới** hoặc **Comment** trong một commit bất kỳ
 3. Gõ comment sau:
 
@@ -90,7 +90,7 @@ Nếu bot báo lỗi, thường là:
 4. **Repository URL**: Đảm bảo có trong Project.toml
    ```toml
    [sources]
-   url = "https://github.com/tkrisnguyen/LabelImgJL.git"
+   url = "https://github.com/tkrisnguyen/LabelImg.jl.git"
    ```
 
 ### Bước 7: Merge & Hoàn thành
@@ -100,7 +100,7 @@ Nếu bot báo lỗi, thường là:
 - Người dùng có thể cài đặt:
   ```julia
   using Pkg
-  Pkg.add("LabelImgJL")
+  Pkg.add("LabelImg")
   ```
 
 ## ⚠️ Lưu ý Quan trọng

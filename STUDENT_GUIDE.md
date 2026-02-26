@@ -1,4 +1,4 @@
-# LabelImgJL - Hướng dẫn Sinh viên / Student Guide
+# LabelImg - Hướng dẫn Sinh viên / Student Guide
 
 ## 🇻🇳 Tiếng Việt
 
@@ -6,7 +6,7 @@
 
 1. **Giải nén file** mà bạn đã tải về
 2. **Vào thư mục** `bin`
-3. **Double-click vào** `LabelImgJL.exe` (Windows) hoặc chạy `./LabelImgJL` (Linux/Mac)
+3. **Double-click vào** `LabelImg.exe` (Windows) hoặc chạy `./LabelImg` (Linux/Mac)
 4. **Mở trình duyệt** và truy cập: `http://localhost:8080`
 
 ### Hướng dẫn sử dụng
