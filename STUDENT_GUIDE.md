@@ -71,14 +71,14 @@ Hoặc cho hộp xoay:
 ### Khắc phục sự cố
 
 **❌ Không mở được chương trình?**
-- Thử chạy bằng Command Prompt: `LabelImgJL.exe 3000` (để đổi port)
+- Thử chạy bằng Command Prompt: `LabelImg.exe 3000` (để đổi port)
 
 **❌ Không thấy ảnh?**
 - Kiểm tra đường dẫn thư mục ảnh có đúng không
 - Đảm bảo ảnh có định dạng: jpg, png, bmp, hoặc gif
 
 **❌ Port 8080 đã được sử dụng?**
-- Chạy với port khác: `LabelImgJL.exe 3000`
+- Chạy với port khác: `LabelImg.exe 3000`
 - Sau đó mở: `http://localhost:3000`
 
 ---
@@ -89,7 +89,7 @@ Hoặc cho hộp xoay:
 
 1. **Extract** the downloaded file
 2. **Navigate to** the `bin` folder
-3. **Double-click** `LabelImgJL.exe` (Windows) or run `./LabelImgJL` (Linux/Mac)
+3. **Double-click** `LabelImg.exe` (Windows) or run `./LabelImg` (Linux/Mac)
 4. **Open browser** to: `http://localhost:8080`
 
 ### User Guide
@@ -154,14 +154,14 @@ Or for rotated boxes:
 ### Troubleshooting
 
 **❌ Can't open the program?**
-- Try running via Command Prompt: `LabelImgJL.exe 3000` (to change port)
+- Try running via Command Prompt: `LabelImg.exe 3000` (to change port)
 
 **❌ Can't see images?**
 - Check if image folder path is correct
 - Ensure images are in format: jpg, png, bmp, or gif
 
 **❌ Port 8080 already in use?**
-- Run with different port: `LabelImgJL.exe 3000`
+- Run with different port: `LabelImg.exe 3000`
 - Then open: `http://localhost:3000`
 
 ---

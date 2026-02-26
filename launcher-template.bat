@@ -1,7 +1,7 @@
 @echo off
-REM Simple launcher for LabelImgJL
+REM Simple launcher for LabelImg
 echo ============================================================
-echo LabelImgJL - Image Annotation Tool
+echo LabelImg - Image Annotation Tool
 echo ============================================================
 echo Starting server...
 echo.
@@ -11,6 +11,6 @@ echo Press Ctrl+C to stop the server
 echo ============================================================
 echo.
 
-"%~dp0LabelImgJL.exe" %*
+"%~dp0LabelImg.exe" %*
 
 pause

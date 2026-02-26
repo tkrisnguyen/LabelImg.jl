@@ -1,6 +1,6 @@
-# LabelImgJL
+# LabelImg
 
-🏷️ **LabelImgJL** là một công cụ gắn nhãn hình ảnh được xây dựng bằng Julia, lấy cảm hứng từ Label Studio.
+🏷️ **LabelImg** là một công cụ gắn nhãn hình ảnh được xây dựng bằng Julia, lấy cảm hứng từ Label Studio.
 
 ## ✨ Tính năng
 
@@ -24,8 +24,8 @@
 
 ```julia
 # Clone repository
-git clone https://github.com/yourusername/LabelImgJL.git
-cd LabelImgJL
+git clone https://github.com/yourusername/LabelImg.jl.git
+cd LabelImg.jl
 
 # Activate project environment
 using Pkg
@@ -47,11 +47,11 @@ julia example.jl
 using Pkg
 Pkg.activate(".")
 
-include("src/LabelImgJL.jl")
-using .LabelImgJL
+include("src/LabelImg.jl")
+using .LabelImg
 
 # Khởi động server trên port 8080
-LabelImgJL.start(8080)
+LabelImg.start(8080)
 ```
 
 Sau đó mở trình duyệt và truy cập: `http://localhost:8080`
@@ -65,14 +65,14 @@ Nếu bạn muốn chia sẻ công cụ này cho người khác mà không yêu 
 julia --project=. build.jl
 ```
 
-Sau khi build xong (10-20 phút lần đầu), file thực thi sẽ nằm trong thư mục `LabelImgJL-dist/bin/`:
-- **Windows**: `LabelImgJL.exe`
-- **Linux/Mac**: `LabelImgJL`
+Sau khi build xong (10-20 phút lần đầu), file thực thi sẽ nằm trong thư mục `LabelImg-dist/bin/`:
+- **Windows**: `LabelImg.exe`
+- **Linux/Mac**: `LabelImg`
 
 Xem chi tiết tại [BUILD.md](BUILD.md)
 
 **Để phân phối cho sinh viên:**
-1. Nén thư mục `LabelImgJL-dist`
+1. Nén thư mục `LabelImg-dist`
 2. Sinh viên giải nén và chạy file executable
 3. Mở trình duyệt tới `http://localhost:8080`
 

@@ -5,7 +5,7 @@
 Manifest.toml
 
 # Build artifacts
-LabelImgJL-dist/
+LabelImg-dist/
 *.exe
 *.app
 *.so

@@ -1,8 +1,8 @@
-# Setup script for LabelImgJL
+# Setup script for LabelImg
 
 using Pkg
 
-println("🔧 Setting up LabelImgJL...")
+println("🔧 Setting up LabelImg...")
 
 # Activate the project environment
 Pkg.activate(".")

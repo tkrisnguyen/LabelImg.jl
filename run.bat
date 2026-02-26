@@ -1,6 +1,6 @@
 @echo off
-REM Simple launcher for LabelImgJL without compilation
-echo Starting LabelImgJL...
+REM Simple launcher for LabelImg without compilation
+echo Starting LabelImg...
 echo.
 
 REM Check if Julia is available

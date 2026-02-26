@@ -25,9 +25,9 @@ if Sys.iswindows()
     if length(current_dir) > 50
         println("\n⚠️  WARNING: Current path is long ($(length(current_dir)) chars)")
         println("   If build fails, try one of these solutions:")
-        println("   1. Build to shorter path: C:\\LabelImgJL-dist")
+        println("   1. Build to shorter path: C:\\LabelImg-dist")
         println("   2. Enable long paths in Windows (see BUILD.md)")
-        println("   3. Move project to shorter path like C:\\LabelImgJL\n")
+        println("   3. Move project to shorter path like C:\\LabelImg\n")
         
         # Ask user if they want to use C:\LabelImg-dist
         println("Would you like to build to C:\\LabelImg-dist instead? (recommended)")

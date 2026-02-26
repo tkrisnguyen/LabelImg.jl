@@ -1,6 +1,6 @@
 @echo off
 echo ========================================
-echo LabelImgJL - Image Annotation Tool
+echo LabelImg - Image Annotation Tool
 echo ========================================
 echo Starting server...
 echo.
@@ -11,6 +11,6 @@ echo Press Ctrl+C to stop the server
 echo ========================================
 echo.
 
-julia --project=. -e "include(\"src/LabelImgJL.jl\"); using .LabelImgJL; LabelImgJL.start(8080)"
+julia --project=. -e "include(\"src/LabelImg.jl\"); using .LabelImg; LabelImg.start(8080)"
 
 pause

@@ -1,4 +1,4 @@
-# Building LabelImgJL Standalone Executable
+# Building LabelImg Standalone Executable
 
 This guide explains how to create a standalone executable that your students can run without installing Julia.
 
@@ -24,20 +24,20 @@ This will:
 ### Step 2: Find the Executable
 
 After building, the executable will be in:
-- **Windows:** `LabelImgJL-dist\bin\LabelImgJL.exe`
-- **Linux/Mac:** `LabelImgJL-dist/bin/LabelImgJL`
+- **Windows:** `LabelImg-dist\bin\LabelImg.exe`
+- **Linux/Mac:** `LabelImg-dist/bin/LabelImg`
 
 ### Step 3: Test the Executable
 
 ```bash
 # Windows
-.\LabelImgJL-dist\bin\LabelImgJL.exe
+.\LabelImg-dist\bin\LabelImg.exe
 
 # Linux/Mac
-./LabelImgJL-dist/bin/LabelImgJL
+./LabelImg-dist/bin/LabelImg
 
 # Custom port
-.\LabelImgJL-dist\bin\LabelImgJL.exe 3000
+.\LabelImg-dist\bin\LabelImg.exe 3000
 ```
 
 Open browser to `http://localhost:8080` (or your custom port)
@@ -45,7 +45,7 @@ Open browser to `http://localhost:8080` (or your custom port)
 ## Distributing to Students
 
 ### Option A: Zip the Entire Folder
-1. Zip the entire `LabelImgJL-dist` folder
+1. Zip the entire `LabelImg-dist` folder
 2. Students unzip and run the executable from `bin/` folder
 3. **Size:** ~500MB-1GB (includes Julia runtime and all libraries)
 
@@ -57,12 +57,12 @@ Use NSIS (Windows) or create a .deb/.rpm (Linux) package
 Create a simple README for students:
 
 ```
-# LabelImgJL - Image Annotation Tool
+# LabelImg - Image Annotation Tool
 
 ## How to Run
 
 1. Extract the zip file
-2. Double-click `bin/LabelImgJL.exe` (Windows) or run `./bin/LabelImgJL` (Linux/Mac)
+2. Double-click `bin/LabelImg.exe` (Windows) or run `./bin/LabelImg` (Linux/Mac)
 3. Open browser to http://localhost:8080
 4. Click "New Project" to start annotating images
 
@@ -80,7 +80,7 @@ Create a simple README for students:
 
 ## Troubleshooting
 
-- Port already in use? Run with custom port: `LabelImgJL.exe 3000`
+- Port already in use? Run with custom port: `LabelImg.exe 3000`
 - Can't see images? Make sure image folder path is correct
 - Need help? Contact [your email]
 ```
@@ -113,7 +113,7 @@ This happens when file paths exceed Windows' 260-character limit.
 **Solution 1: Build to shorter path (Easiest)**
 ```julia
 # In build.jl, change output_dir to:
-output_dir = "C:\\LabelImgJL-dist"
+output_dir = "C:\\LabelImg-dist"
 ```
 
 **Solution 2: Enable Long Path Support**
@@ -124,7 +124,7 @@ New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name
 Then restart your computer.
 
 **Solution 3: Move project to shorter path**
-Move the entire LabelImgJL folder to `C:\LabelImgJL` and build from there.
+Move the entire LabelImg folder to `C:\LabelImg` and build from there.
 
 ### "Out of Memory" during build
 - Close other applications
@@ -147,14 +147,14 @@ Instead of building an executable, give students a simpler launcher script:
 **For Windows students** - Create `start.bat`:
 ```batch
 @echo off
-julia --project=. -e "include(\"src/LabelImgJL.jl\"); using .LabelImgJL; LabelImgJL.start(8080)"
+julia --project=. -e "include(\"src/LabelImg.jl\"); using .LabelImg; LabelImg.start(8080)"
 pause
 ```
 
 **For Linux/Mac students** - Create `start.sh`:
 ```bash
 #!/bin/bash
-julia --project=. -e 'include("src/LabelImgJL.jl"); using .LabelImgJL; LabelImgJL.start(8080)'
+julia --project=. -e 'include("src/LabelImg.jl"); using .LabelImg; LabelImg.start(8080)'
 ```
 
 Then distribute:

@@ -1,17 +1,17 @@
 using Test
-using LabelImgJL
+using LabelImg
 
-@testset "LabelImgJL.jl" begin
+@testset "LabelImg.jl" begin
     @testset "Module loads" begin
-        @test isdefined(LabelImgJL, :Project)
-        @test isdefined(LabelImgJL, :Annotation)
-        @test isdefined(LabelImgJL, :create_project)
-        @test isdefined(LabelImgJL, :save_annotations)
+        @test isdefined(LabelImg, :Project)
+        @test isdefined(LabelImg, :Annotation)
+        @test isdefined(LabelImg, :create_project)
+        @test isdefined(LabelImg, :save_annotations)
     end
     
     @testset "Data structures" begin
         # Test Annotation structure
-        ann = LabelImgJL.Annotation(
+        ann = LabelImg.Annotation(
             "test-id",
             "test.jpg",
             [],
@@ -22,11 +22,11 @@ using LabelImgJL
         @test isempty(ann.annotations)
         
         # Test Project structure
-        proj = LabelImgJL.Project(
+        proj = LabelImg.Project(
             "TestProject",
             String[],
             ["label1", "label2"],
-            Dict{String,LabelImgJL.Annotation}(),
+            Dict{String,LabelImg.Annotation}(),
             1
         )
         @test proj.name == "TestProject"
@@ -36,7 +36,7 @@ using LabelImgJL
     
     @testset "Helper functions" begin
         # Test encode_image with invalid path
-        result = LabelImgJL.encode_image("nonexistent.jpg")
+        result = LabelImg.encode_image("nonexistent.jpg")
         @test result === nothing
     end
 end

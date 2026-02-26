@@ -3,4 +3,4 @@
   command = "julia --project=. -e 'using Pkg; Pkg.instantiate()'"
 
 [start]
-  command = "julia --project=. -e 'include(\"src/LabelImgJL.jl\"); LabelImgJL.start(parse(Int, get(ENV, \"PORT\", \"8080\"))))'"
+  command = "julia --project=. -e 'include(\"src/LabelImg.jl\"); LabelImg.start(parse(Int, get(ENV, \"PORT\", \"8080\")))'"

@@ -1,7 +1,7 @@
 @echo off
-REM Setup and run LabelImgJL - First-time setup script
+REM Setup and run LabelImg - First-time setup script
 echo ============================================================
-echo LabelImgJL Setup and Launch
+echo LabelImg Setup and Launch
 echo ============================================================
 echo.
 
@@ -29,7 +29,7 @@ echo ============================================================
 echo Setup complete!
 echo ============================================================
 echo.
-echo Starting LabelImgJL server...
+echo Starting LabelImg server...
 echo Open your browser to: http://localhost:8000
 echo Press Ctrl+C to stop the server
 echo.
