@@ -5,7 +5,7 @@
 ### One-time Setup (5 minutes)
 ```bash
 # Navigate to project folder
-cd LabelImg.jl
+cd LabelImg
 
 # Install dependencies
 julia --project=. -e 'using Pkg; Pkg.instantiate()'

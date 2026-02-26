@@ -19,7 +19,7 @@ git push origin main1
 
 ### Bước 2: Tạo Release/Tag trên GitHub
 
-1. Truy cập: https://github.com/tkrisnguyen/LabelImg.jl/releases
+1. Truy cập: https://github.com/tkrisnguyen/LabelImg/releases
 2. Click **"Create a new release"**
 3. Điền thông tin:
    - **Tag version**: `v0.1.0` (phải bắt đầu bằng 'v')
@@ -40,7 +40,7 @@ Pkg.add("PkgDev")
 
 **Phương pháp 1: Qua GitHub Comment (Khuyến nghị)**
 
-1. Truy cập repository: https://github.com/tkrisnguyen/LabelImg.jl
+1. Truy cập repository: https://github.com/tkrisnguyen/LabelImg
 2. Tạo một **Issue mới** hoặc **Comment** trong một commit bất kỳ
 3. Gõ comment sau:
 
@@ -90,7 +90,7 @@ Nếu bot báo lỗi, thường là:
 4. **Repository URL**: Đảm bảo có trong Project.toml
    ```toml
    [sources]
-   url = "https://github.com/tkrisnguyen/LabelImg.jl.git"
+   url = "https://github.com/tkrisnguyen/LabelImg.git"
    ```
 
 ### Bước 7: Merge & Hoàn thành

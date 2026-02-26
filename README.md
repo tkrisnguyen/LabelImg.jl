@@ -24,8 +24,8 @@
 
 ```julia
 # Clone repository
-git clone https://github.com/yourusername/LabelImg.jl.git
-cd LabelImg.jl
+git clone https://github.com/yourusername/LabelImg.git
+cd LabelImg
 
 # Activate project environment
 using Pkg
