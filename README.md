@@ -1,30 +1,32 @@
 # LabelImg
 
-🏷️ **LabelImg** là một công cụ gắn nhãn hình ảnh được xây dựng bằng Julia, lấy cảm hứng từ Label Studio.
+🏷️ **LabelImg** is an image annotation tool built with Julia, inspired by Label Studio.
 
-## ✨ Tính năng
+The Vietnamese version of this README is available at [README.vi.md](README.vi.md).
 
-- 🖼️ **Giao diện web hiện đại**: Giao diện trực quan, dễ sử dụng
-- 📦 **Nhiều loại annotation**: Rectangle (hộp chữ nhật), Rotated Rectangle (hộp quay), Polygon (đa giác), Point (điểm)
-- 🎨 **Quản lý nhãn**: Tạo và quản lý các nhãn tùy chỉnh
-- 💾 **Lưu trữ JSON**: Xuất annotations sang định dạng JSON
-- ⌨️ **Navigation nhanh**: Chuyển đổi giữa các hình ảnh dễ dàng
-- 🎯 **Project-based**: Tổ chức công việc theo dự án
+## ✨ Features
 
-## 📋 Yêu cầu
+- 🖼️ **Modern web UI**: clean, easy-to-use interface
+- 📦 **Multiple annotation types**: Rectangle, Rotated Rectangle, Polygon, Point
+- 🎨 **Label management**: create and manage custom labels
+- 💾 **JSON export**: save annotations in JSON format
+- ⌨️ **Fast navigation**: move between images quickly
+- 🎯 **Project-based workflow**: organize work by project
 
-- Julia 1.9 trở lên
-- Các packages:
-  - Genie.jl (web framework)
-  - Images.jl (xử lý hình ảnh)
-  - FileIO.jl (đọc/ghi file)
-  - JSON3.jl (xử lý JSON)
+## 📋 Requirements
 
-## 🚀 Cài đặt
+- Julia 1.9+
+- Dependencies (managed via `Project.toml`):
+  - Genie.jl
+  - Images.jl
+  - FileIO.jl
+  - JSON3.jl
+
+## 🚀 Installation
 
 ```julia
 # Clone repository
-git clone https://github.com/yourusername/LabelImg.jl.git
+git clone https://github.com/tkrisnguyen/LabelImg.jl.git
 cd LabelImg.jl
 
 # Activate project environment
@@ -33,15 +35,15 @@ Pkg.activate(".")
 Pkg.instantiate()
 ```
 
-## 💻 Sử dụng
+## 💻 Usage
 
-### Cách 1: Chạy script example
+### Option 1: Run the example script
 
 ```julia
 julia example.jl
 ```
 
-### Cách 2: Sử dụng trong REPL
+### Option 2: Run from Julia REPL
 
 ```julia
 using Pkg
@@ -50,60 +52,52 @@ Pkg.activate(".")
 include("src/LabelImg.jl")
 using .LabelImg
 
-# Khởi động server trên port 8080
+# Start server on port 8080
 LabelImg.start(8080)
 ```
 
-Sau đó mở trình duyệt và truy cập: `http://localhost:8080`
+Then open your browser at `http://localhost:8080`.
 
-### Cách 3: Tạo file thực thi độc lập (Cho sinh viên không cài Julia)
-
-Nếu bạn muốn chia sẻ công cụ này cho người khác mà không yêu cầu họ cài Julia:
+### Option 3: Build a standalone executable (for users without Julia)
 
 ```julia
-# Build executable
 julia --project=. build.jl
 ```
 
-Sau khi build xong (10-20 phút lần đầu), file thực thi sẽ nằm trong thư mục `LabelImg-dist/bin/`:
+After building (10-20 minutes on first build), the executable is in `LabelImg-dist/bin/`:
 - **Windows**: `LabelImg.exe`
 - **Linux/Mac**: `LabelImg`
 
-Xem chi tiết tại [BUILD.md](BUILD.md)
+See [BUILD.md](BUILD.md) for details.
 
-**Để phân phối cho sinh viên:**
-1. Nén thư mục `LabelImg-dist`
-2. Sinh viên giải nén và chạy file executable
-3. Mở trình duyệt tới `http://localhost:8080`
+## 📖 Quick User Guide
 
-## 📖 Hướng dẫn sử dụng
+1. **Create a project**
+   - Click `New Project`
+   - Enter project name
+   - Enter image directory path
+   - Enter labels (comma-separated)
+   - Click `Create`
 
-1. **Tạo Project mới**:
-   - Click nút "New Project"
-   - Nhập tên project
-   - Nhập đường dẫn thư mục chứa hình ảnh
-   - Nhập các nhãn (cách nhau bằng dấu phẩy)
-   - Click "Create"
+2. **Annotate images**
+   - Select a label from the left panel
+   - Select a tool: Rectangle, Rotated Box, Polygon, or Point
+   - Draw on the image
+   - Click `Save`
 
-2. **Gắn nhãn**:
-   - Chọn một nhãn từ danh sách bên trái
-   - Chọn công cụ: Rectangle, Rotated Box, Polygon, hoặc Point
-   - Vẽ annotation trên hình ảnh
-   - Click "Save" để lưu
+3. **Navigate images**
+   - Use `Previous` and `Next`
+   - Annotations are saved per image
 
-3. **Navigation**:
-   - Sử dụng nút "Previous" và "Next" để di chuyển giữa các hình ảnh
-   - Annotations được tự động lưu cho mỗi hình ảnh
+4. **Annotation tools**
+   - **Rectangle**: click and drag
+   - **Rotated Box**: click 3 points (A/B define first edge, C completes box)
+   - **Polygon**: left-click to add points, right-click to finish (minimum 3 points)
+   - **Point**: single click
 
-4. **Các công cụ annotation**:
-   - **Rectangle**: Click và kéo để vẽ hộp chữ nhật
-   - **Rotated Box**: Click 3 điểm để vẽ hộp xoay (điểm A, B tạo cạnh đầu, điểm C hoàn thành hộp)
-   - **Polygon**: Click chuột trái nhiều lần để thêm điểm, click chuột phải để hoàn thành (cần ít nhất 3 điểm)
-   - **Point**: Click để đánh dấu một điểm
+## 📁 Output JSON Structure
 
-## 📁 Cấu trúc dữ liệu đầu ra
-
-Annotations được lưu dưới dạng JSON:
+Annotations are saved in JSON format:
 
 ```json
 {
@@ -142,25 +136,18 @@ Annotations được lưu dưới dạng JSON:
 }
 ```
 
-## 🎨 Tính năng nâng cao
-
-- **Multiple annotations**: Có thể vẽ nhiều annotations trên một hình ảnh
-- **Color coding**: Mỗi annotation tự động được gán màu khác nhau
-- **Delete annotations**: Xóa annotations không mong muốn
-- **Clear all**: Xóa tất cả annotations trên hình ảnh hiện tại
-
 ## 🔧 API Endpoints
 
-- `GET /` - Giao diện web chính
-- `POST /api/project/create` - Tạo project mới
-- `GET /api/image/:index` - Lấy hình ảnh theo index
-- `GET /api/image/next` - Chuyển đến hình ảnh tiếp theo
-- `GET /api/image/prev` - Quay lại hình ảnh trước
-- `POST /api/annotations/save` - Lưu annotations
+- `GET /` - main web interface
+- `POST /api/project/create` - create project
+- `GET /api/image/:index` - get image by index
+- `GET /api/image/next` - next image
+- `GET /api/image/prev` - previous image
+- `POST /api/annotations/save` - save annotations
 
-## 🤝 Đóng góp
+## 🤝 Contributing
 
-Contributions, issues và feature requests được chào đón!
+Contributions, issues, and feature requests are welcome.
 
 ## 📝 License
 
@@ -168,4 +155,4 @@ MIT License
 
 ## 🙏 Credits
 
-Lấy cảm hứng từ [Label Studio](https://labelstud.io/) và [LabelImg](https://github.com/tzutalin/labelImg)
+Inspired by [Label Studio](https://labelstud.io/) and [LabelImg](https://github.com/tzutalin/labelImg)

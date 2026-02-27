@@ -1,189 +1,116 @@
-# Hướng dẫn Đăng ký lên Julia General Registry
+# Julia General Registry Guide
 
-## 📋 Checklist Chuẩn bị (ĐÃ HOÀN THÀNH ✅)
+This guide follows the recommended Julia workflow:
 
-- ✅ **LICENSE file** - MIT License đã được tạo
-- ✅ **Authors trong Project.toml** - Đã thêm thông tin tác giả
-- ✅ **Test suite** - Đã tạo test/runtests.jl với basic tests
-- ✅ **Cấu trúc package** - Đúng chuẩn Julia package
+1. **Register first** with Registrator
+2. **Tag after the registry PR is merged** (preferably via TagBot)
 
-## 🚀 Quy trình Đăng ký (7 Bước)
+This avoids re-tagging if the registration PR needs additional changes.
 
-### Bước 1: Đẩy code lên GitHub
+## ✅ Pre-registration Checklist
+
+- Public GitHub repository
+- `LICENSE` file present
+- `Project.toml` has valid `name`, `uuid`, `version`, `authors`, and `[compat]`
+- Tests pass locally
+- README is clear and in English for General registry users
+
+## 🚀 Recommended Registration Workflow
+
+### Step 1: Push your latest changes
 
 ```bash
 git add -A
-git commit -m "Prepare for registry: add LICENSE, tests, and authors"
-git push origin main1
+git commit -m "Prepare for registry"
+git push origin main
 ```
 
-### Bước 2: Tạo Release/Tag trên GitHub
-
-1. Truy cập: https://github.com/tkrisnguyen/LabelImg.jl/releases
-2. Click **"Create a new release"**
-3. Điền thông tin:
-   - **Tag version**: `v0.1.0` (phải bắt đầu bằng 'v')
-   - **Release title**: `v0.1.0 - Initial Release`
-   - **Description**: Mô tả ngắn gọn về package
-4. Click **"Publish release"**
-
-### Bước 3: Cài đặt JuliaRegistrator
-
-Trong Julia REPL:
+### Step 2: Run local checks before registration
 
 ```julia
 using Pkg
-Pkg.add("PkgDev")
+Pkg.activate(".")
+Pkg.instantiate()
+Pkg.test()
 ```
 
-### Bước 4: Đăng ký qua JuliaRegistrator Bot
+### Step 3: Register with Registrator (do not tag yet)
 
-**Phương pháp 1: Qua GitHub Comment (Khuyến nghị)**
-
-1. Truy cập repository: https://github.com/tkrisnguyen/LabelImg.jl
-2. Tạo một **Issue mới** hoặc **Comment** trong một commit bất kỳ
-3. Gõ comment sau:
+Create a GitHub comment on the commit you want to register:
 
 ```
 @JuliaRegistrator register
 ```
 
-4. JuliaRegistrator bot sẽ tự động:
-   - Kiểm tra package
-   - Tạo Pull Request đến General Registry
-   - Thông báo kết quả
+Registrator will open a PR against `JuliaRegistries/General`.
 
-**Phương pháp 2: Qua Web Interface**
+### Step 4: Address review feedback if needed
 
-1. Truy cập: https://github.com/JuliaRegistries/Registrator.jl
-2. Làm theo hướng dẫn sử dụng GitHub App
+If changes are requested:
 
-### Bước 5: Chờ Review
+1. Commit fixes to your repository
+2. Trigger Registrator again from the updated commit
+3. Confirm the new registry PR is green
 
-- Bot sẽ tự động kiểm tra package
-- Nếu có lỗi, bot sẽ comment các vấn đề cần sửa
-- Các maintainers của General Registry sẽ review
-- Thời gian review: **3-7 ngày**
+### Step 5: Wait for merge
 
-### Bước 6: Sửa lỗi (nếu có)
+General registry has an automatic waiting period for new packages (typically around 3 days), then maintainers merge if all checks pass.
 
-Nếu bot báo lỗi, thường là:
+### Step 6: Tag the release after merge (preferred: TagBot)
 
-**Lỗi thường gặp:**
+After the registry PR is merged, create the Git tag/release for that exact registered commit/version.
 
-1. **UUID đã tồn tại**: Cần tạo UUID mới
-   ```julia
-   using UUIDs
-   uuid4()  # Copy UUID mới vào Project.toml
-   ```
+Using TagBot is recommended because it automates this step and keeps tags aligned with merged registry metadata.
 
-2. **Test fail**: Sửa tests trong test/runtests.jl
+## 🤖 TagBot Setup (Recommended)
 
-3. **Compat missing**: Thêm compat cho tất cả dependencies
-   ```toml
-   [compat]
-   julia = "1.9"
-   Genie = "5"
-   # ... (đã có)
-   ```
+Add `.github/workflows/TagBot.yml` (if not already present) based on the official template from TagBot docs.
 
-4. **Repository URL**: Đảm bảo có trong Project.toml
-   ```toml
-   [sources]
-   url = "https://github.com/tkrisnguyen/LabelImg.jl.git"
-   ```
+At minimum, TagBot needs:
+- `GITHUB_TOKEN`
+- Trigger on `issue_comment` and/or scheduled run
 
-### Bước 7: Merge & Hoàn thành
+Reference: https://github.com/JuliaRegistries/TagBot
 
-- Khi PR được approve, nó sẽ tự động merge
-- Package sẽ có sẵn trong General Registry
-- Người dùng có thể cài đặt:
-  ```julia
-  using Pkg
-  Pkg.add("LabelImg")
-  ```
+## ⚠️ Common Problems
 
-## ⚠️ Lưu ý Quan trọng
-
-### UUID Hiện tại
-Package đang dùng UUID: `a1b2c3d4-e5f6-7890-abcd-ef1234567890`
-
-**⚠️ QUAN TRỌNG**: UUID này có vẻ là UUID demo/placeholder. 
-
-**NÊN LÀM NGAY**: Tạo UUID mới và unique:
+### UUID collision
+Generate a new UUID:
 
 ```julia
-# Trong Julia REPL:
 using UUIDs
 uuid4()
 ```
 
-Sau đó cập nhật vào [Project.toml](Project.toml):
-```toml
-uuid = "UUID-MỚI-VỪA-TẠO"
-```
+Then update `Project.toml`.
 
-### Yêu cầu của General Registry
+### Missing compat bounds
+Add all direct dependencies to `[compat]` in `Project.toml`.
 
-1. **Repository phải public**
-2. **Có ít nhất 1 tag/release**
-3. **Tests phải pass** (pkg> test)
-4. **Documentation khuyến khích** (không bắt buộc lần đầu)
-5. **Tên package không trùng** với packages khác
+### Tests failing in CI
+Fix tests locally with `Pkg.test()` before re-running Registrator.
 
-### Kiểm tra trước khi đăng ký
+### Repository not accessible
+Ensure the repository is public and the URL in `Project.toml` is correct.
 
-```julia
-# Trong thư mục package
-using Pkg
-Pkg.activate(".")
+## 📚 References
 
-# 1. Kiểm tra build
-Pkg.build()
+- Registrator: https://github.com/JuliaRegistries/Registrator.jl
+- General registry guidelines: https://github.com/JuliaRegistries/General
+- TagBot: https://github.com/JuliaRegistries/TagBot
+- Julia package creation guide: https://pkgdocs.julialang.org/dev/creating-packages/
 
-# 2. Chạy tests
-Pkg.test()
+## ✅ Final Checklist
 
-# 3. Kiểm tra dependencies
-Pkg.status()
-```
+Before commenting `@JuliaRegistrator register`:
 
-## 📚 Tài liệu Tham khảo
+- [ ] README is in English (or includes an English primary version)
+- [ ] Tests pass locally (`Pkg.test()`)
+- [ ] Repository is public
+- [ ] `Project.toml` is complete and valid
+- [ ] No placeholder UUID
 
-- [Registrator.jl Guide](https://github.com/JuliaRegistries/Registrator.jl)
-- [General Registry Guidelines](https://github.com/JuliaRegistries/General)
-- [Julia Package Naming Guidelines](https://pkgdocs.julialang.org/dev/creating-packages/)
+After the General PR is merged:
 
-## 🆘 Troubleshooting
+- [ ] Create tag/release for the merged registered version (or let TagBot do it)
 
-### "Package name already registered"
-→ Chọn tên khác cho package
-
-### "UUID collision"  
-→ Tạo UUID mới bằng `uuid4()`
-
-### "Tests failed"
-→ Sửa tests để pass: `Pkg.test()`
-
-### "Missing compat entries"
-→ Thêm [compat] cho tất cả deps trong Project.toml
-
-### "Repository not accessible"
-→ Đảm bảo repo là public trên GitHub
-
-## ✅ Checklist Cuối cùng
-
-Trước khi chạy `@JuliaRegistrator register`:
-
-- [ ] UUID là unique (không phải demo UUID)
-- [ ] Đã push code lên GitHub
-- [ ] Repository là PUBLIC
-- [ ] Đã tạo tag/release v0.1.0
-- [ ] Tests pass (`Pkg.test()`)
-- [ ] LICENSE file có
-- [ ] README.md có hướng dẫn rõ ràng
-- [ ] Project.toml có đầy đủ: name, uuid, authors, version, [compat]
-
----
-
-**Chúc bạn đăng ký thành công! 🎉**
