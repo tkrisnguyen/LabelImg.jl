@@ -6,7 +6,7 @@ The Vietnamese version of this README is available at [README.vi.md](README.vi.m
 
 ## ✨ Features
 
-- 🖼️ **Modern web UI**: clean, easy-to-use interface
+- 🖼️ **Modern web UI**: clean, easy-to-use interface.
 - 📦 **Multiple annotation types**: Rectangle, Rotated Rectangle, Polygon, Point
 - 🎨 **Label management**: create and manage custom labels
 - 💾 **JSON export**: save annotations in JSON format
